@@ -1,20 +1,17 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.alert import Alert
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support.ui import Select
-from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
 import pytest
 import time
 
 @pytest.fixture
 def setup_teardown():
+    
     # Setup
     service = Service(ChromeDriverManager().install())
     driver = webdriver.Chrome(service=service)
-    driver.get("https://www.saucedemo.com/v1/")
+    driver.get("https://www.saucedemo.com/")
     
     driver.implicitly_wait(10)
     time.sleep(2)
@@ -23,8 +20,18 @@ def setup_teardown():
     yield driver
     driver.quit()
 
+
 def find_id(driver, elemento):
     return driver.find_element(By.ID, elemento)
+
+# metodo para aceitar o alert
+# def accept_alert_chrome(driver, timeout=10):
+    
+#     alert = Alert(driver)
+#     alert_text = alert.text.lower()
+#     if "senha" in alert_text:
+#         alert.accept()
+    
 
 # Testando o logout
 def test_logout(setup_teardown):
@@ -40,7 +47,9 @@ def test_logout(setup_teardown):
     btn_login.click()
     time.sleep(2)
 
-    
+    # Aceitar o alert
+    # accept_alert_chrome(driver)
+
     # Clicar no menu lateral
     btn_menu = driver.find_element(By.CSS_SELECTOR, ".bm-burger-button")
     btn_menu.click()
@@ -51,3 +60,7 @@ def test_logout(setup_teardown):
     btn_logout.click()
     time.sleep(2)
     
+    # Validar se o logout foi feito com sucesso
+    assert driver.title == "Swag Labs"
+    assert driver.current_url == "https://www.saucedemo.com/"
+    assert driver.find_element(By.CSS_SELECTOR, ".login_logo").is_displayed()
