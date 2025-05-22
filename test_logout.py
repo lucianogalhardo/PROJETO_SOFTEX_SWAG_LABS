@@ -16,7 +16,7 @@ def setup_teardown():
     driver = webdriver.Chrome(service=service)
     driver.get("https://www.saucedemo.com/v1/")
     
-    #driver.implicitly_wait(10)
+    driver.implicitly_wait(10)
     time.sleep(2)
     
     # Teardown
@@ -39,6 +39,7 @@ def test_logout(setup_teardown):
     btn_login = find_id(driver, "login-button")
     btn_login.click()
     time.sleep(2)
+
     
     # Clicar no menu lateral
     btn_menu = driver.find_element(By.CSS_SELECTOR, ".bm-burger-button")
