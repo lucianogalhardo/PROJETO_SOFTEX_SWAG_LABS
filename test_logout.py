@@ -15,9 +15,10 @@ def setup_teardown():
     service = Service(ChromeDriverManager().install())
     driver = webdriver.Chrome(service=service)
     driver.get("https://www.saucedemo.com/v1/")
-    #driver.set_window_position(2000, 0)
+    
     #driver.implicitly_wait(10)
     time.sleep(2)
+    
     # Teardown
     yield driver
     driver.quit()
@@ -34,20 +35,18 @@ def test_logout(setup_teardown):
     campo_usuario.send_keys("standard_user")
     campo_senha = find_id(driver, "password")
     campo_senha.send_keys("secret_sauce")
+    time.sleep(2)
     btn_login = find_id(driver, "login-button")
     btn_login.click()
-    time.sleep(5)
+    time.sleep(2)
     
     # Clicar no menu lateral
     btn_menu = driver.find_element(By.CSS_SELECTOR, ".bm-burger-button")
     btn_menu.click()
-    time.sleep(5)
+    time.sleep(2)
     
     # Clicar no botão logout
     btn_logout = find_id(driver, "logout_sidebar_link")
     btn_logout.click()
-    time.sleep(10)
+    time.sleep(2)
     
-    # # Validar se o usuário foi desconectado
-    # assert driver.current_url == "https://www.saucedemo.com/v1/"
-    # assert driver.find_element(By.ID, "login-button").is_displayed()
